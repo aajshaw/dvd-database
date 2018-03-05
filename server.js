@@ -13,32 +13,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-// const sqlite3 = require('sqlite3').verbose();
-//
-// const configDB = require('./config/database.js');
-// //const dbPromise = sqlite.open(configDB.file, { Promise });
-// var db = new sqlite3.Database(configDB.file, (err) => {
-//   if (err) {
-//     console.error(err.message);
-//   }
-//   console.log('Connected to database');
-//   db.get('select distinct oid as _id, * from users where username = ?', 'aajshaw', function(err, row) {
-//     if (err) {
-//       throw err;
-//     }
-//     if (row) {
-//       console.log("got row");
-//       var user = create(row);
-//     } else {
-//       console.log("missing row");
-//     }
-//   });
-// });
 const db = require('./db/db')();
-//console.dir(db);
-//db.user.findByUsername('aajshaw');
-
-// Connect to database?
 
 require('./config/passport')(passport, db); // pass passport for configuration
 

@@ -31,7 +31,6 @@ module.exports = function(app, passport) {
   // Dashboard
   // Protected, have to be logged in
   app.get('/dashboard', isLoggedIn, function(req, res) {
-    console.log("About to render dashboard");
     res.render('dashboard.ejs', {
       user : req.user
     });
@@ -52,11 +51,7 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure user is logged in
 function isLoggedIn(req, res, next) {
-  console.log("isLoggedIn() called");
-  console.dir(req.session.passport.user);
-  console.log("USER SHOWN");
   if (req.isAuthenticated()) {
-    console.log("... authenticated");
     return next();
     //next();
   }

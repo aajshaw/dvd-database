@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt-nodejs');
 module.exports = function(db) {
   let user = {
     create: function() {
-      console.log("USER.CREATE() called");
       let user = {
         _id: null,
         username: null,
@@ -19,7 +18,6 @@ module.exports = function(db) {
       }
       user.save = function(callback) {
         let me = this;
-//        db.run('insert into users (username, password) values (?, ?)', [this.username, this.password], err);
         db.run('insert into users (username, password) values (?, ?)',
                [this.username, this.password],
                function(err) {
@@ -34,7 +32,6 @@ module.exports = function(db) {
       return user;
     },
     make: function(attrs) {
-      console.log("USER.MAKE() called");
       let user = this.create();
 
       user._id = attrs._id;
@@ -45,43 +42,35 @@ module.exports = function(db) {
     },
     findByUsername: function(username, callback) {
       let me = this;
-      console.log('findByUsername()');
 
       db.get('select distinct oid as _id, * from users where username = ?', username, function(err, row) {
         if (err) {
           throw err;
         }
         if (row) {
-          console.log(`Found ${username} ${row}`);
           let user = me.make(row);
           callback(null, user);
         } else {
-          console.log("Not found " + username);
           callback(null, null);
         }
       });
     },
     findOne: function(username, callback) {
       let me = this;
-      console.log('findOne');
 
       db.get('select oid as _id, * from users where username = ?', [username], function(err, row) {
         if (err) {
-          console.log('ERROR');
           throw err;
         }
         if (row) {
-          console.log(`Found ${username} ${row}`);
           callback(null, me.make(row));
         } else {
-          console.log("Not found " + username);
           callback(null, null);
         }
       });
     },
     findById: function(id, callback) {
       let me = this;
-      console.log("findById");
 
       db.get('select oid as _id, * from users where oid = ?', [id], function(err, row) {
         if (err) {
