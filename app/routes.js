@@ -3,12 +3,12 @@
 module.exports = function(app, passport) {
   // HOME PAGE (with login links)
   app.get('/', function(req, res) {
-    res.render('index.ejs');
+    res.render('pages/index.ejs');
   });
   // LOGIN
   app.get('/login', function(req, res) {
     // render and pass in flash data if it exists
-    res.render('login.ejs', { message: req.flash('loginMessage') });
+    res.render('pages/login.ejs', { message: req.flash('loginMessage') });
   });
   // Process the login form
   app.post('/login', passport.authenticate('local-login', {
@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
 
   // SIGNUP
   app.get('/signup', function(req, res) {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
+    res.render('pages/signup.ejs', { message: req.flash('signupMessage') });
   });
 
   app.post('/signup', passport.authenticate('local-signup', {
@@ -31,16 +31,21 @@ module.exports = function(app, passport) {
   // Dashboard
   // Protected, have to be logged in
   app.get('/dashboard', isLoggedIn, function(req, res) {
-    res.render('dashboard.ejs', {
-      user : req.user
+    let films = [
+      { name: 'The Dirty Dozen' },
+      { name: 'The Good, The Bad and The ugly' },
+      { name: 'For a few dollars more' }
+    ];
+    let filmSize = 3;
+    let collectionSize = 10;
+    console.dir(req);
+    res.render('pages/dashboard.ejs', {
+      user: req.user,
+      films: films,
+      filmSize: filmSize,
+      collectionSize: collectionSize
     });
   });
-  // app.get('/dashboard', function(req, res) {
-  //   console.log("About to render dashboard");
-  //   res.render('dashboard.ejs', {
-  //     user : req.user
-  //   });
-  // });
 
   // LOGOUT
   app.get('logout', function(req, res) {
