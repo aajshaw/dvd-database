@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <h1><%= user.username %></h1>
+    <h2><%= collectionSize %> collections <%= filmSize %> films</h2>
+    <h2>Films</h2>
+    <ul>
+      <% films.forEach(function(film) { %>
+        <li><%= film.name %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
