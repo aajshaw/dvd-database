@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="col-sm-6 col-sm-offset-3">
+
+        <!-- New collection form -->
+        <form action="/create/container" method="post">
+          <div class="form-group">
+            <label>Collection name</label>
+            <input type="text" class="form-control" name="collection_name">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg">Create</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

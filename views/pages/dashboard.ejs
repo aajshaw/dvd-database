@@ -4,13 +4,19 @@
     <% include ../partials/head %>
   </head>
   <body>
-    <h1><%= user.username %></h1>
-    <h2><%= collectionSize %> collections <%= filmSize %> films</h2>
-    <h2>Films</h2>
-    <ul>
-      <% films.forEach(function(film) { %>
-        <li><%= film.name %></li>
-      <% }); %>
-    </ul>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1><%= user.username %></h1>
+        <a href="/collections" class="btn btn-default"><%= collectionSize %> collections</a>
+        <a href="/films" class="btn btn-default"><%= filmSize %> films</a>
+        <h2>Films</h2>
+        <ul>
+          <% films.forEach(function(film) { %>
+            <li><%= film.name %></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>

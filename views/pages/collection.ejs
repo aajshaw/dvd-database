@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <% console.dir(collection); %>
+        <h1>Collection <%= collection.name -%></h1>
+        <h2>There are <%= collection.itemCount -%> films in this collection</h2>
+      </div>
+    </div>
+    List the films here
+    Add films to collection here
+  </body>
+</html>
