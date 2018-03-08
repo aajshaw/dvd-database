@@ -23,11 +23,12 @@ module.exports = function(db) {
                function(err) {
                  if (err) {
                    callback(err);
+                 } else {
+                   me._id = this.lastID;
+                   callback(null);
                  }
-                 me._id = this.lastID;
-                 callback(null);
                });
-      }
+      };
 
       return user;
     },

@@ -8,13 +8,13 @@
     <div class="container">
       <div class="jumbotron text-center">
         <h1><%= user.username %></h1>
-        <a href="/collections" class="btn btn-default"><%= collectionSize %> collections</a>
-        <a href="/films" class="btn btn-default"><%= filmSize %> films</a>
+        <a href="/collections" class="btn btn-default"><%= collectionSize -%> <%= collectionSize == 1 ? 'collection' : 'collections' -%></a>
+        <a href="/films" class="btn btn-default"><%= filmSize -%> <%= filmSize == 1 ? 'film' : 'films' -%></a>
         <h2>Films</h2>
         <ul>
-          <% films.forEach(function(film) { %>
-            <li><%= film.name %></li>
-          <% }); %>
+          <% films.forEach(function(film) { -%>
+            <li><%= film.name -%></li>
+          <% }); -%>
         </ul>
       </div>
     </div>

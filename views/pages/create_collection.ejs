@@ -7,9 +7,10 @@
     <% include ../partials/navigation %>
     <div class="container">
       <div class="col-sm-6 col-sm-offset-3">
+        <% include ../partials/message %>
 
         <!-- New collection form -->
-        <form action="/create/container" method="post">
+        <form action="/create/collection" method="post">
           <div class="form-group">
             <label>Collection name</label>
             <input type="text" class="form-control" name="collection_name">

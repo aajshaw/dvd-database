@@ -8,7 +8,8 @@ module.exports = function() {
     }
     console.log('Connected to database');
   });
-  db.user = require('../app/models/user')(db)
+  db.user = require('../app/models/user')(db);
+  db.collection = require('../app/models/collections')(db);
 
   return db;
 };

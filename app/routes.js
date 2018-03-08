@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, db) {
   // HOME PAGE (with login links)
   app.get('/', function(req, res) {
     res.render('pages/index.ejs');
@@ -37,31 +37,39 @@ module.exports = function(app, passport) {
       { name: 'For a few dollars more' }
     ];
     let filmSize = 3;
-    let collectionSize = 10;
-    res.render('pages/dashboard.ejs', {
-      user: req.user,
-      films: films,
-      filmSize: filmSize,
-      collectionSize: collectionSize
-    });
+//    let collectionSize = 10;
+    db.collection.count(function(collectionSize) {
+      res.render('pages/dashboard.ejs', {
+        user: req.user,
+        films: films,
+        filmSize: filmSize,
+        collectionSize: collectionSize
+      })
+    })
   });
 
   app.get('/collections', isLoggedIn, function(req, res) {
-    let collections = [
-      { id: 1, name: 'Star Wars' },
-      { id: 2, name: 'The Mummy' },
-      { id: 3, name: 'James Bond' }
-    ];
-    res.render('pages/collections', {
-      collections: collections
+    // let collections = [
+    //   { id: 1, name: 'Star Wars' },
+    //   { id: 2, name: 'The Mummy' },
+    //   { id: 3, name: 'James Bond' }
+    // ];
+    db.collection.fetchAll(function(collections) {
+//    db.collection.fetchWithNameFilter('i', function(collections) {
+      res.render('pages/collections', {
+        collections: collections
+      })
     });
   });
 
   app.get('/collection/:id', isLoggedIn, function(req, res) {
-    let collection = { id: req.params['id'], name: 'Star Wars', itemCount: 7 };
-    res.render('pages/collection', {
-      collection: collection
-    });
+    db.collection.fetchById(req.params['id'], function(collection) {
+      res.render('pages/collection', { collection: collection })
+    })
+    // let collection = { id: req.params['id'], name: 'Star Wars', itemCount: 7 };
+    // res.render('pages/collection', {
+    //   collection: collection
+    // });
   });
 
   app.get('/create/collection', isLoggedIn, function(req, res) {
@@ -72,7 +80,31 @@ module.exports = function(app, passport) {
     // Check if collection already exists
     // create collection
     // return to collections page
-    res.render('pages/collections');
+//     console.dir(req.body);
+//     if (true || db.collection.exists(req.body.collection_name)) {
+//       console.log("WTF");
+//       res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists`});
+// //      req.flash('createCollection', `Collection ${req.body.collection_name} already exists`);
+//     } else {
+//       console.log("WTF2");
+//       res.redirect('/collections')
+//     }
+    //res.render('pages/collections');
+    db.collection.exists(req.body.collection_name, function(exists) {
+      if (exists) {
+        res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists` });
+      } else {
+        let collection = db.collection.create();
+        collection.name = req.body.collection_name;
+        collection.save(function(err) {
+          if (err) {
+            res.render('pages/create_collection', { message: `Could not add collection ${req.body.collection_name}, error ${err}`});
+          } else {
+            res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} added` });
+          }
+        });
+      }
+    });
   });
 
   // LOGOUT
