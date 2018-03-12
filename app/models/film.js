@@ -83,6 +83,9 @@ module.exports = function(db) {
     },
     fetchAll: function(callback) {
       this.fetchWithNameFilter(callback);
+    },
+    delete: function(id, callback) {
+      db.run('delete from films where id = ?', [id], callback);
     }
   };
 

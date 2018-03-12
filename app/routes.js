@@ -45,14 +45,29 @@ module.exports = function(app, passport, db) {
 
   app.get('/films', isLoggedIn, function(req, res) {
     db.film.fetchAll(function(films) {
-      console.dir(films);
       res.render('pages/films', { films: films })
     })
   });
 
+  app.get('/film/delete/:id', isLoggedIn, function(req, res) {
+    db.collection_film.deleteFilm(req.params['id'], function() {
+      db.film.delete(req.params['id'], function() {
+        db.film.fetchAll(function(films) {
+          res.render('pages/films', { films: films })
+        })
+      })
+    })
+  });
+
+  app.get('/film/:id/add_collections', isLoggedIn, function(req, res) {
+    // TODO:
+  });
+
   app.get('/film/:id', isLoggedIn, function(req, res) {
     db.film.fetchById(req.params['id'], function(film) {
-      res.render('pages/film', { film: film })
+      db.collection_film.fetchCollectionsForFilm(req.params['id'], function(collections) {
+        res.render('pages/film', { film: film, collections: collections })
+      })
     })
   });
 
@@ -160,8 +175,6 @@ module.exports = function(app, passport, db) {
   });
 
   app.get('/collection/:collection_id/remove/:film_id', isLoggedIn, function(req, res) {
-    // delete film from collection
-    // same as get /collection_films route
     db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
       db.collection.fetchById(req.params['collection_id'], function(collection) {
         db.collection_film.fetchFilmsForCollection(req.params['collection_id'], function(films) {

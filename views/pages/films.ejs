@@ -7,9 +7,9 @@
     <% include ../partials/navigation %>
     <div class="container">
       <div class="jumbotron text-center">
-        <h1>Collections</h1>
+        <h1>Films</h1>
         <h2>There are <%= films.length %> films</h2>
-        <h2><a href="/create/film" class="btn btn-primary"><span class="fas fa-plus"></span> Add film</a></h2>
+        <h2><a href="/create/film" class="btn btn-primary"><span class="fas fa-plus color-white"></span> Add film</a></h2>
       </div>
     </div>
     <table class="table">
@@ -23,7 +23,11 @@
         <tr>
           <td><%= film.name -%></td>
           <td><%= film.collection_count -%></td>
-          <td>view add to collections delete</td>
+          <td>
+            <a href="/film/<%= film.id -%>" class="btn btn-default"><span class="fas fa-eye" data-toggle="tooltip" title="Show detail"></span></a>
+            <a href="/film/<%= film.id -%>/add_collections"><span class="fas fa-plus" data-toggle="tooltip" title="Add to collections"></span></a>
+            <a href="/film/delete/<%= film.id -%>" class="btn btn-default" onclick="return confirm('Delete <%= film.name -%> permanently?')"><span class="fas fa-trash" data-toggle="tooltip" title="Delete film"></span></a>
+          </td>
         </tr>
       <% }) -%>
     </table>

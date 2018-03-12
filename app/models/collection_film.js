@@ -86,12 +86,31 @@ module.exports = function(db) {
         callback(rows);
       });
     },
+    fetchCollectionsForFilm: function(id, callback) {
+      db.all(`select c.id,
+                     c.Name
+                from collections c,
+                     collection_films cf
+               where cf.film_id = ?
+                 and c.id = cf.collection_id
+               order by c.name`,
+             [id],
+             function(err, rows) {
+        if (err) {
+          throw err;
+        }
+        callback(rows);
+      });
+    },
     delete: function(collection_id, film_id, callback) {
       db.run(`delete from collection_films
                where collection_id = ?
                  and film_id = ?`,
              [collection_id, film_id],
            callback);
+    },
+    deleteFilm: function(film_id, callback) {
+      db.run('delete from collection_films where film_id = ?', [film_id], callback);
     }
   };
 
