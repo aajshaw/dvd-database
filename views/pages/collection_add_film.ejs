@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Collection <%= collection.name -%> add films</h1>
+      </div>
+    </div>
+    <ul>
+      <% films.forEach(function(film) { -%>
+        <li>
+          <%= film.name -%> <a href="/collection/<%= collection.id -%>/add/<%= film.id -%>" class="btn btn-primary">Add</a>
+        </li>
+      <% }) -%>
+    </ul>
+    <a href="/collection/<%= collection.id -%>" class="btn btn-primary" role="button">Back to collection</a>
+  </body>
+</html>

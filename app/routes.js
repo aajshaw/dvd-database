@@ -28,48 +28,72 @@ module.exports = function(app, passport, db) {
     failureFlash: true
   }));
 
-  // Dashboard
-  // Protected, have to be logged in
   app.get('/dashboard', isLoggedIn, function(req, res) {
-    let films = [
-      { name: 'The Dirty Dozen' },
-      { name: 'The Good, The Bad and The ugly' },
-      { name: 'For a few dollars more' }
-    ];
-    let filmSize = 3;
-//    let collectionSize = 10;
     db.collection.count(function(collectionSize) {
-      res.render('pages/dashboard.ejs', {
-        user: req.user,
-        films: films,
-        filmSize: filmSize,
-        collectionSize: collectionSize
+      db.film.count(function(filmSize) {
+        db.collection_film.count(function(collectionFilmSize) {
+          res.render('pages/dashboard.ejs', {
+            user: req.user,
+            filmSize: filmSize,
+            collectionSize: collectionSize,
+            collectionFilmSize: collectionFilmSize
+          })
+        })
       })
     })
   });
 
+  app.get('/films', isLoggedIn, function(req, res) {
+    db.film.fetchAll(function(films) {
+      console.dir(films);
+      res.render('pages/films', { films: films })
+    })
+  });
+
+  app.get('/film/:id', isLoggedIn, function(req, res) {
+    db.film.fetchById(req.params['id'], function(film) {
+      res.render('pages/film', { film: film })
+    })
+  });
+
+  app.get('/create/film', isLoggedIn, function(req, res) {
+    res.render('pages/create_film');
+  });
+
+  app.post('/create/film', isLoggedIn, function(req, res) {
+    if (req.body.film_name.length > 0) {
+      db.film.exists(req.body.film_name, function(exists) {
+        if (exists) {
+          res.render('pages/create_film', { message: `Film ${req.body.film_name} already exists` });
+        } else {
+          let film = db.film.create();
+          film.name = req.body.film_name;
+          film.save(function(err) {
+            if (err) {
+              res.render('pages/create_film', { message: `Could not add film ${req.body.film_name}, error ${err}`});
+            } else {
+              res.render('pages/create_film', { message: `Film ${req.body.film_name} added` });
+            }
+          });
+        }
+      });
+    } else {
+      res.render('pages/create_film', { message: 'No film name given'});
+    }
+  });
+
   app.get('/collections', isLoggedIn, function(req, res) {
-    // let collections = [
-    //   { id: 1, name: 'Star Wars' },
-    //   { id: 2, name: 'The Mummy' },
-    //   { id: 3, name: 'James Bond' }
-    // ];
     db.collection.fetchAll(function(collections) {
-//    db.collection.fetchWithNameFilter('i', function(collections) {
-      res.render('pages/collections', {
-        collections: collections
-      })
+      res.render('pages/collections', { collections: collections })
     });
   });
 
   app.get('/collection/:id', isLoggedIn, function(req, res) {
     db.collection.fetchById(req.params['id'], function(collection) {
-      res.render('pages/collection', { collection: collection })
+      db.collection_film.fetchFilmsForCollection(req.params['id'], function(films) {
+        res.render('pages/collection', { collection: collection, films: films });
+      })
     })
-    // let collection = { id: req.params['id'], name: 'Star Wars', itemCount: 7 };
-    // res.render('pages/collection', {
-    //   collection: collection
-    // });
   });
 
   app.get('/create/collection', isLoggedIn, function(req, res) {
@@ -77,34 +101,86 @@ module.exports = function(app, passport, db) {
   });
 
   app.post('/create/collection', isLoggedIn, function(req, res) {
-    // Check if collection already exists
-    // create collection
-    // return to collections page
-//     console.dir(req.body);
-//     if (true || db.collection.exists(req.body.collection_name)) {
-//       console.log("WTF");
-//       res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists`});
-// //      req.flash('createCollection', `Collection ${req.body.collection_name} already exists`);
-//     } else {
-//       console.log("WTF2");
-//       res.redirect('/collections')
-//     }
-    //res.render('pages/collections');
-    db.collection.exists(req.body.collection_name, function(exists) {
-      if (exists) {
-        res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists` });
+    if (req.body.collection_name.lemgth > 0) {
+      db.collection.exists(req.body.collection_name, function(exists) {
+        if (exists) {
+          res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists` });
+        } else {
+          let collection = db.collection.create();
+          collection.name = req.body.collection_name;
+          collection.save(function(err) {
+            if (err) {
+              res.render('pages/create_collection', { message: `Could not add collection ${req.body.collection_name}, error ${err}`});
+            } else {
+              res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} added` });
+            }
+          });
+        }
+      });
+    } else {
+      res.render('pages/create_collection', { message: 'No collection name given'});
+    }
+  });
+
+  app.get('/collection_films', isLoggedIn, function(req, res) {
+    db.collection_film.fetchData(function(collectionFilms) {
+      res.render('pages/collection_films', { collectionFilms: collectionFilms })
+    })
+  });
+
+  app.get('/collection/:collection_id/add/:film_id', isLoggedIn, function(req, res) {
+    // add the record
+    let collectionFilm = db.collection_film.create();
+    collectionFilm.collectionID = req.params['collection_id'];
+    collectionFilm.filmID = req.params['film_id'];
+    collectionFilm.save(function(err) {
+      if (err) {
+        db.collection.fetchById(req.params['collection_id'], function(collection) {
+          db.collection_film.fetchFilmsNotInCollection(req.params['collection_id'], function(films) {
+            res.render('pages/collection_add_film',
+                       {
+                         message: `Could not add film to collection ${err}`,
+                         collection: collection,
+                         films: films
+                       })
+          })
+        });
       } else {
-        let collection = db.collection.create();
-        collection.name = req.body.collection_name;
-        collection.save(function(err) {
-          if (err) {
-            res.render('pages/create_collection', { message: `Could not add collection ${req.body.collection_name}, error ${err}`});
-          } else {
-            res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} added` });
-          }
+        db.collection.fetchById(req.params['collection_id'], function(collection) {
+          db.collection_film.fetchFilmsNotInCollection(req.params['collection_id'], function(films) {
+            res.render('pages/collection_add_film',
+                       {
+                         collection: collection,
+                         films: films
+                       })
+          })
         });
       }
-    });
+    })
+  });
+
+  app.get('/collection/:collection_id/remove/:film_id', isLoggedIn, function(req, res) {
+    // delete film from collection
+    // same as get /collection_films route
+    db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
+      db.collection.fetchById(req.params['collection_id'], function(collection) {
+        db.collection_film.fetchFilmsForCollection(req.params['collection_id'], function(films) {
+          res.render('pages/collection', {collection: collection, films: films});
+        })
+      })
+    })
+  });
+
+  app.get('/collection/:id/add_films', isLoggedIn, function(req, res) {
+    db.collection.fetchById(req.params['id'], function(collection) {
+      db.collection_film.fetchFilmsNotInCollection(req.params['id'], function(films) {
+        res.render('pages/collection_add_film',
+                   {
+                     collection: collection,
+                     films: films
+                   })
+      })
+    })
   });
 
   // LOGOUT
@@ -118,7 +194,6 @@ module.exports = function(app, passport, db) {
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
-    //next();
   }
   // Not authenticated, back to home page
   res.redirect  ('/');

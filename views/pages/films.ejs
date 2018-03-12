@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Collections</h1>
+        <h2>There are <%= films.length %> films</h2>
+        <h2><a href="/create/film" class="btn btn-primary"><span class="fas fa-plus"></span> Add film</a></h2>
+      </div>
+    </div>
+    <ul>
+      <% films.forEach(function(film) { %>
+        <li><a href="/film/<%= film.id -%>" class="btn btn-primary"><%= film.name -%></a></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

@@ -9,13 +9,24 @@
       <div class="jumbotron text-center">
         <h1>Collections</h1>
         <h2>There are <%= collections.length %> collections</h2>
-        <h2><a href="/create/collection" class="btn btn-default"><span class="fas fa-plus"></span> Add collection</a></h2>
+        <h2><a href="/create/collection" class="btn btn-primary"><span class="fas fa-plus"></span> Add collection</a></h2>
       </div>
     </div>
-    <ul>
-      <% collections.forEach(function(collection) { %>
-        <li><a href="/collection/<%= collection.id -%>" class="btn btn-default"><%= collection.name -%></a></li>
-      <% }); %>
-    </ul>
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Films in collection</th>
+        <th>Actions</th>
+      </tr>
+      <% collections.forEach(function(collection) { -%>
+        <tr>
+          <td><%= collection.name -%></td>
+          <td><%= collection.collection_count -%></td>
+          <td>
+            <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye"></span></a>
+          </td>
+        </tr>
+      <% }); -%>
+    </table>
   </body>
 </html>

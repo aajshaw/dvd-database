@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Collections and films</h1>
+        <% if (typeof(collectionFilms) == "undefined") { -%>
+          <h2>There are no films in any collections<h2>
+        <% } else { -%>
+          <h2>There are <%= collectionFilms.length %> films in collections</h2>
+        <% } -%>
+      </div>
+    </div>
+    <% if (typeof(collectionFilms) != "undefined") { -%>
+      <ul>
+        <% collectionFilms.forEach(function(collectionFilm) { %>
+          <li>
+            <a href="/collection/<%= collectionFilm.collection_id -%>" class="btn btn-primary"><%= collectionFilm.collection_name -%></a>
+            <a href="/film/<%= collectionFilm.film_id -%>" class="btn btn-primary"><%= collectionFilm.film_name -%></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } -%>
+  </body>
+</html>

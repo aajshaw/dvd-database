@@ -9,7 +9,9 @@ module.exports = function() {
     console.log('Connected to database');
   });
   db.user = require('../app/models/user')(db);
-  db.collection = require('../app/models/collections')(db);
+  db.film = require('../app/models/film')(db);
+  db.collection = require('../app/models/collection')(db);
+  db.collection_film = require('../app/models/collection_film')(db);
 
   return db;
 };

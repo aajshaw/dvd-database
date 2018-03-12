@@ -7,12 +7,28 @@
     <% include ../partials/navigation %>
     <div class="container">
       <div class="jumbotron text-center">
-        <% console.dir(collection); %>
         <h1>Collection <%= collection.name -%></h1>
-        <h2>There are <%= collection.itemCount -%> films in this collection</h2>
+        <h2>There are <%= collection.film_count -%> films in this collection</h2>
       </div>
     </div>
-    List the films here
-    Add films to collection here
+    <div>
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+        <% films.forEach(function(film) { -%>
+          <% console.dir(film); -%>
+          <tr>
+            <td><%= film.name -%></td>
+            <td><a href="/collection/<%= collection.id -%>/remove/<%= film.id -%>"<span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
+          </tr>
+        <% }); -%>
+      </table>
+    </div>
+    <div>
+      <a href="/collection/<%= collection.id -%>/add_films" class="btn btn-primary">Add film to collection</a>
+      <a href="/collections" class="btn btn-primary">Collections</a>
+    </div>
   </body>
 </html>

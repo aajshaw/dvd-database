@@ -1,15 +1,15 @@
 'use strict'
 
 module.exports = function(db) {
-  let collection = {
+  let film = {
     create: function() {
-      let collection = {
+      let film = {
         id: null,
         name: null
       };
-      collection.save = function(callback) {
+      film.save = function(callback) {
         let me = this;
-        db.run('insert into collections (name) values (?)', [this.name], function(err) {
+        db.run('insert into films (name) values (?)', [this.name], function(err) {
           if (err) {
             callback(err);
           } else {
@@ -19,10 +19,10 @@ module.exports = function(db) {
         });
       };
 
-      return collection;
+      return film;
     },
     exists: function(name, callback) {
-      db.get('select count(*) as count from collections where name = ?', [name], function(err, row) {
+      db.get('select count(*) as count from films where name = ?', [name], function(err, row) {
         if (err) {
           throw err;
         }
@@ -30,7 +30,7 @@ module.exports = function(db) {
       });
     },
     count: function(callback) {
-      db.get('select count(*) as count from collections', function(err, row) {
+      db.get('select count(*) as count from films', function(err, row) {
         if (err) {
           throw err;
         }
@@ -38,7 +38,7 @@ module.exports = function(db) {
       });
     },
     fetchById: function(id, callback) {
-      db.get('select * from collections where id = ?', [id], function(err, row) {
+      db.get('select * from films where id = ?', [id], function(err, row) {
         if (err) {
           throw err;
         }
@@ -51,17 +51,20 @@ module.exports = function(db) {
         filter = null;
       }
       if (filter) {
-        db.all("select * from collections where lower(name) like '%' || lower(?) || '%' order by name", [filter], function(err, rows) {
+        console.log("WTF filter = " + filter);
+        db.all("select * from films where lower(name) like '%' || lower(?) || '%' order by name", [filter], function(err, rows) {
           if (err) {
             throw err;
           }
           callback(rows);
         });
       } else {
-        db.all('select * from collections order by name', function(err, rows) {
+        console.log("No filter");
+        db.all('select * from films order by name', function(err, rows) {
           if (err) {
             throw err;
           }
+          console.dir(rows);
           callback(rows);
         });
       }
@@ -71,5 +74,5 @@ module.exports = function(db) {
     }
   };
 
-  return collection;
+  return film;
 }

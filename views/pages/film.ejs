@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Film <%= film.name -%></h1>
+        <% if (film.collectionsSize > 0) { -%>
+          <h2>This film is in <%= film.collectionSize -%></h2>
+        <% } -%>
+      </div>
+    </div>
+    List the collections here
+    Add film to another collection here
+  </body>
+</html>
