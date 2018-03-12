@@ -20,12 +20,15 @@ require('./config/passport')(passport, db); // pass passport for configuration
 // Set up express application
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(bodyParser());
+//app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 
 // Set up passport
 app.use(session({
-  secret: 'reallydumbsecret' // I would NEVER do this in production code
+  secret: 'reallydumbsecret', // I would NEVER do this in production code
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
