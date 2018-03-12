@@ -51,20 +51,32 @@ module.exports = function(db) {
         filter = null;
       }
       if (filter) {
-        console.log("WTF filter = " + filter);
-        db.all("select * from films where lower(name) like '%' || lower(?) || '%' order by name", [filter], function(err, rows) {
+        db.all(`select f.id,
+                       f.name,
+                       (select count(*)
+                          from collection_films cf
+                         where cf.film_id = f.id) as collection_count
+                  from films f
+                 where lower(f.name) like '%' || lower(?) || '%'
+                 order by f.name`,
+               [filter], function(err, rows) {
           if (err) {
             throw err;
           }
           callback(rows);
         });
       } else {
-        console.log("No filter");
-        db.all('select * from films order by name', function(err, rows) {
+        db.all(`select f.id,
+                       f.name,
+                       (select count(*)
+                          from collection_films cf
+                         where cf.film_id = f.id) as collection_count
+                  from films f
+                 order by name`,
+               function(err, rows) {
           if (err) {
             throw err;
           }
-          console.dir(rows);
           callback(rows);
         });
       }

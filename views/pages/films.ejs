@@ -12,10 +12,20 @@
         <h2><a href="/create/film" class="btn btn-primary"><span class="fas fa-plus"></span> Add film</a></h2>
       </div>
     </div>
-    <ul>
-      <% films.forEach(function(film) { %>
-        <li><a href="/film/<%= film.id -%>" class="btn btn-primary"><%= film.name -%></a></li>
-      <% }); %>
-    </ul>
+    <table class="table">
+      <tr>
+        <th>Title</th>
+        <th>In collections</th>
+        <th>Actions</th>
+      </tr>
+      <% films.forEach(function(film) { -%>
+        <% console.dir(film); -%>
+        <tr>
+          <td><%= film.name -%></td>
+          <td><%= film.collection_count -%></td>
+          <td>view add to collections delete</td>
+        </tr>
+      <% }) -%>
+    </table>
   </body>
 </html>
