@@ -88,11 +88,28 @@ module.exports = function(db) {
     },
     fetchCollectionsForFilm: function(id, callback) {
       db.all(`select c.id,
-                     c.Name
+                     c.name
                 from collections c,
                      collection_films cf
                where cf.film_id = ?
                  and c.id = cf.collection_id
+               order by c.name`,
+             [id],
+             function(err, rows) {
+        if (err) {
+          throw err;
+        }
+        callback(rows);
+      });
+    },
+    fetchCollectionsWithoutFilm: function(id, callback) {
+      db.all(`select c.id,
+                     c.name
+                from collections c
+               where not exists (select *
+                                   from collection_films cf
+                                  where cf.film_id = ?
+                                    and cf.collection_id = c.id)
                order by c.name`,
              [id],
              function(err, rows) {

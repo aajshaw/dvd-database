@@ -8,14 +8,10 @@
     <div class="container">
       <div class="jumbotron text-center">
         <h1><%= user.username %></h1>
-        <a href="/collections" class="btn btn-primary"><%= collectionSize -%> <%= collectionSize == 1 ? 'collection' : 'collections' -%></a>
         <a href="/films" class="btn btn-primary"><%= filmSize -%> <%= filmSize == 1 ? 'film' : 'films' -%></a>
-        <a href="collection_films" class="btn btn-primary"><%= collectionFilmSize -%> <%= collectionFilmSize == 1 ? 'films' : 'film' -%> in collections</a>
+        <a href="/collections" class="btn btn-primary"><%= collectionSize -%> <%= collectionSize == 1 ? 'collection' : 'collections' -%></a>
+        <a href="collection_films" class="btn btn-primary"><%= collectionFilmSize -%> <%= collectionFilmSize != 1 ? 'films' : 'film' -%> in collections</a>
       </div>
-    </div>
-    <div>
-      <a href="/create/film" class="btn btn-primary"><span class="fas fa-plus color-white" ></span> Add film</a>
-      <a href="/create/collection" class="btn btn-primary"><span class="fas fa-plus color-white"></span> Add collection</a>
     </div>
   </body>
 </html>

@@ -8,27 +8,30 @@
     <div class="container">
       <div class="jumbotron text-center">
         <h1>Collection <%= collection.name -%></h1>
-        <h2>There are <%= collection.film_count -%> films in this collection</h2>
+        <% if (films.length > 0) { -%>
+          <h2>There are <%= collection.film_count -%> films in this collection</h2>
+        <% } -%>
       </div>
     </div>
-    <div>
-      <table class="table">
-        <tr>
-          <th>Name</th>
-          <th>Actions</th>
-        </tr>
-        <% films.forEach(function(film) { -%>
-          <% console.dir(film); -%>
+    <% if (films.length > 0) { -%>
+      <div>
+        <table class="table">
           <tr>
-            <td><%= film.name -%></td>
-            <td><a href="/collection/<%= collection.id -%>/remove/<%= film.id -%>"<span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
+            <th>Film name</th>
+            <th>Actions</th>
           </tr>
-        <% }); -%>
-      </table>
-    </div>
-    <div>
-      <a href="/collection/<%= collection.id -%>/add_films" class="btn btn-primary">Add film to collection</a>
-      <a href="/collections" class="btn btn-primary">Collections</a>
-    </div>
+          <% films.forEach(function(film) { -%>
+            <% console.dir(film); -%>
+            <tr>
+              <td><%= film.name -%></td>
+              <td>
+                <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail" /></a>
+                <a href="/collection/<%= collection.id -%>/remove/<%= film.id -%>" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
+              </td>
+            </tr>
+          <% }); -%>
+        </table>
+      </div>
+    <% } -%>
   </body>
 </html>

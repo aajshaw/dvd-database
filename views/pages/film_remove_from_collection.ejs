@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Film <%= film.name -%> remove from collections</h1>
+      </div>
+    </div>
+    <% if (collections.length > 0) { -%>
+      <div>
+        <table class="table">
+          <tr>
+            <th>Collection name</th>
+            <th>Actions</th>
+          </tr>
+          <% collections.forEach(function(collection) { -%>
+            <tr>
+              <td><%= collection.name -%></td>
+              <td>
+                <a href="/film/<%= film.id -%>/remove_from/<%= collection.id -%>" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')">
+                  <span class="fas fa-unlink" data-toggle="tooltip" title="Remove film from collection" />
+                </a>
+              </td>
+            </tr>
+          <% }) -%>
+        </table>
+      </div>
+    <% } -%>
+  </body>
+</html>

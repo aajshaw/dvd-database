@@ -1,4 +1,14 @@
 <div>
-  <a href="/logout" class="btn btn-default">Logout</a>
-  <a href="/dashboard" class="btn btn-default">Dashboard</a>
+  <a href="/logout" class="btn btn-primary">Logout</a>
+  <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+  <a href="/films" class="btn btn-primary">Films</a>
+  <a href="/create/film" class="btn btn-primary">Add films</a>
+  <a href="/collections" class="btn btn-primary">Collections</a>
+  <a href="create/collection" class="btn btn-primary">Add collections</a>
+  <% if (typeof(collection) != "undefined") { -%>
+    <a href="/collection/<%= collection.id -%>/add_films" class="btn btn-primary">Add films to collection</a>
+  <% } -%>
+  <% if (typeof(film) != "undefined") { -%>
+    <a href="/film/<%= film.id -%>/add_to_collections" class="btn btn-primary">Add film to collections</a>
+  <% } -%>
 </div>

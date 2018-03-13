@@ -7,20 +7,20 @@
     <% include ../partials/navigation %>
     <div class="container">
       <div class="jumbotron text-center">
-        <h1>Collection <%= collection.name -%> add films</h1>
+        <h1>Film <%= film.name -%> add to collections</h1>
       </div>
     </div>
     <div>
       <table class="table">
         <tr>
-          <th>Film name</th>
+          <th>Collection name</th>
           <th>Actions</th>
         </tr>
-        <% films.forEach(function(film) { -%>
+        <% collections.forEach(function(collection) { -%>
           <tr>
-            <td><%= film.name -%></td>
+            <td><%= collection.name -%></td>
             <td>
-              <a href="/collection/<%= collection.id -%>/add/<%= film.id -%>">
+              <a href="/film/<%= film.id -%>/add_to/<%= collection.id -%>">
                 <span class="fas fa-link" data-toggle="tooltip" title="Add film to collection" />
               </a>
             </td>

@@ -9,12 +9,10 @@
       <div class="jumbotron text-center">
         <h1>Film <%= film.name -%></h1>
         <% if (collections.length > 0) { -%>
-          <h2>This film is in <%= collections.length -%></h2>
+          <h2>This film is in <%= collections.length -%> collection<%= collections.length != 1  ? 's' : '' -%>  </h2>
         <% } -%>
       </div>
     </div>
-    List the collections here
-    Add film to another collection here
     <% if (collections.length > 0) { -%>
       <h2>Collections</h2>
       <table class="table">
@@ -26,7 +24,6 @@
           <tr>
             <td><%= collection.name -%></td>
             <td>
-              show collection, remove film from collection
               <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
               <a href="/film/<%= film.id -%>/remove_from/<%= collection.id -%>" class="btn btn-default" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
             </td>

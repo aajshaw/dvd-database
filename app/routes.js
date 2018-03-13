@@ -59,8 +59,64 @@ module.exports = function(app, passport, db) {
     })
   });
 
-  app.get('/film/:id/add_collections', isLoggedIn, function(req, res) {
-    // TODO:
+  app.get('/film/:film_id/add_to/:collection_id', isLoggedIn, function(req, res) {
+    let collectionFilm = db.collection_film.create();
+    collectionFilm.collectionID = req.params['collection_id'];
+    collectionFilm.filmID = req.params['film_id'];
+    collectionFilm.save(function(err) {
+      if (err) {
+        db.film.fetchById(req.params['film_id'], function(film) {
+          db.collection_film.fetchCollectionsWithoutFilm(req.params['film_id'], function(collections) {
+            res.render('pages/film_add_to_collection',
+                       {
+                         message: `Could not add film to collection ${err}`,
+                         film: film,
+                         collections: collections
+                       })
+          })
+        });
+      } else {
+        db.film.fetchById(req.params['film_id'], function(film) {
+          db.collection_film.fetchCollectionsWithoutFilm(req.params['film_id'], function(collections) {
+            res.render('pages/film_add_to_collection',
+                       {
+                         film: film,
+                         collections: collections
+                       })
+          })
+        });
+      }
+    })
+  });
+
+  app.get('/film/:id/add_to_collections', isLoggedIn, function(req, res) {
+    db.film.fetchById(req.params['id'], function(film) {
+      db.collection_film.fetchCollectionsWithoutFilm(req.params['id'], function(collections) {
+        res.render('pages/film_add_to_collection', { film: film, collections: collections })
+      })
+    })
+  });
+
+  app.get("/film/:id/remove_from_collections", isLoggedIn, function(req, res) {
+    db.film.fetchById(req.params['id'], function(film) {
+      db.collection_film.fetchCollectionsForFilm(req.params['id'], function(collections) {
+        res.render('pages/film_remove_from_collection', { film: film, collections: collections })
+      })
+    })
+  });
+
+  app.get('/film/:film_id/remove_from/:collection_id', isLoggedIn, function(req, res) {
+    db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
+      db.film.fetchById(req.params['film_id'], function(film) {
+        db.collection_film.fetchCollectionsForFilm(req.params['film_id'], function(collections) {
+          if (collections.length > 0) {
+            res.render('pages/film_remove_from_collection', { film: film, collections: collections });
+          } else {
+            res.render('pages/film', { film: film, collections: collections });
+          }
+        })
+      })
+    })
   });
 
   app.get('/film/:id', isLoggedIn, function(req, res) {
@@ -116,7 +172,7 @@ module.exports = function(app, passport, db) {
   });
 
   app.post('/create/collection', isLoggedIn, function(req, res) {
-    if (req.body.collection_name.lemgth > 0) {
+    if (req.body.collection_name.length > 0) {
       db.collection.exists(req.body.collection_name, function(exists) {
         if (exists) {
           res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists` });
@@ -144,7 +200,6 @@ module.exports = function(app, passport, db) {
   });
 
   app.get('/collection/:collection_id/add/:film_id', isLoggedIn, function(req, res) {
-    // add the record
     let collectionFilm = db.collection_film.create();
     collectionFilm.collectionID = req.params['collection_id'];
     collectionFilm.filmID = req.params['film_id'];
@@ -174,11 +229,23 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.get("/collection/:id/remove_films", isLoggedIn, function(req, res) {
+    db.collection.fetchById(req.params['id'], function(collection) {
+      db.collection_film.fetchFilmsForCollection(req.params['id'], function(films) {
+        res.render('pages/collection_remove_films', { collection: collection, films: films, })
+      })
+    })
+  });
+
   app.get('/collection/:collection_id/remove/:film_id', isLoggedIn, function(req, res) {
     db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
       db.collection.fetchById(req.params['collection_id'], function(collection) {
         db.collection_film.fetchFilmsForCollection(req.params['collection_id'], function(films) {
-          res.render('pages/collection', {collection: collection, films: films});
+          if (films.length > 0) {
+            res.render('pages/collection_remove_films', { collection: collection, films: films });
+          } else {
+            res.render('pages/collection', { collection: collection, films: films });
+          }
         })
       })
     })

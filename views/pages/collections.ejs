@@ -9,7 +9,7 @@
       <div class="jumbotron text-center">
         <h1>Collections</h1>
         <h2>There are <%= collections.length %> collections</h2>
-        <h2><a href="/create/collection" class="btn btn-primary"><span class="fas fa-plus" style="color:white"></span> Add collection</a></h2>
+        <h2><a href="/create/collection" class="btn btn-primary">Add collection</a></h2>
       </div>
     </div>
     <table class="table">
@@ -23,7 +23,11 @@
           <td><%= collection.name -%></td>
           <td><%= collection.collection_count -%></td>
           <td>
-            <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye"></span></a>
+            <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
+            <a href="/collection/<%= collection.id -%>/add_films"><span class="fas fa-link" data-toggle="tooltip" title="Add films to collection" /></a>
+            <% if (collection.collection_count > 0) { -%>
+              <a href="/collection/<%= collection.id -%>/remove_films"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove films from collection" /></a>
+            <% } -%>
           </td>
         </tr>
       <% }); -%>
