@@ -50,6 +50,7 @@ module.exports = function(db) {
         callback = filter;
         filter = null;
       }
+      console.dir(filter);
       if (filter) {
         db.all(`select f.id,
                        f.name,

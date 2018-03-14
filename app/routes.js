@@ -49,6 +49,12 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.post('/films/filter', isLoggedIn, function(req, res) {
+    db.film.fetchWithNameFilter(req.body['filter'], function(films) {
+      res.render('pages/films', { films: films, filter: req.body['filter'] })
+    })
+  });
+
   app.get('/film/delete/:id', isLoggedIn, function(req, res) {
     db.collection_film.deleteFilm(req.params['id'], function() {
       db.film.delete(req.params['id'], function() {
@@ -157,6 +163,12 @@ module.exports = function(app, passport, db) {
     db.collection.fetchAll(function(collections) {
       res.render('pages/collections', { collections: collections })
     });
+  });
+
+  app.post('/collections/filter', isLoggedIn, function(req, res) {
+    db.collection.fetchWithNameFilter(req.body['filter'], function(collections) {
+      res.render('pages/collections', { collections: collections, filter: req.body['filter'] })
+    })
   });
 
   app.get('/collection/:id', isLoggedIn, function(req, res) {

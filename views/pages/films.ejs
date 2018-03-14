@@ -12,6 +12,22 @@
         <h2><a href="/create/film" class="btn btn-primary">Add film</a></h2>
       </div>
     </div>
+    <div class="container">
+      <div class="col-sm-9 col-sm-offset-3">
+        <form action="/films/filter" method="post">
+          <div class="form-group row">
+            <label class="col-sm-1 col-form-label">Filter</label>
+            <% if (typeof(filter) == "undefined") { -%>
+              <input type="text" class="form-control col-sm-6" name="filter">
+            <% } else { -%>
+              <input type="text" class="form-control col-sm-6" name="filter" value="<%= filter -%>">
+            <% } -%>
+            <button type="submit" class="btn col-sm-1 form-control"><span class="fas fa-filter" data-toggle="tooltip" title="Filter film list" /></button>
+            <a href="/films" class="btn col-form- col-sm-1"><span class="fas fa-trash" data-toggle="tooltip" title="Clear filter" /></a>
+          </div>
+        </form>
+      </div>
+    </div>
     <table class="table">
       <tr>
         <th>Title</th>
