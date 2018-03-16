@@ -87,6 +87,9 @@ module.exports = function(db) {
     },
     fetchAll: function(callback) {
       this.fetchWithNameFilter(callback);
+    },
+    delete: function(id, callback) {
+      db.run('delete from collections where id = ?', [id], callback);
     }
   };
 

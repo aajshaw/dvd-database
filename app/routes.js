@@ -171,6 +171,16 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.get('/collection/delete/:id', isLoggedIn, function(req, res) {
+    db.collection_film.deleteCollection(req.params['id'], function() {
+      db.collection.delete(req.params['id'], function() {
+        db.collection.fetchAll(function(collections) {
+          res.render('pages/collections', { collections: collections })
+        })
+      })
+    })
+  });
+
   app.get('/collection/:id', isLoggedIn, function(req, res) {
     db.collection.fetchById(req.params['id'], function(collection) {
       db.collection_film.fetchFilmsForCollection(req.params['id'], function(films) {

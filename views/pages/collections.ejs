@@ -44,6 +44,7 @@
             <% if (collection.collection_count > 0) { -%>
               <a href="/collection/<%= collection.id -%>/remove_films"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove films from collection" /></a>
             <% } -%>
+            <a href="/collection/delete/<%= collection.id -%>" onclick="return confirm('Delete <%= collection.name -%> permanently?')"><span class="fas fa-trash" data-toggle="tooltip" title="Delete collection" /></a>
           </td>
         </tr>
       <% }); -%>

@@ -10,7 +10,7 @@
         <h1><%= user.username %></h1>
         <a href="/films" class="btn btn-primary"><%= filmSize -%> <%= filmSize == 1 ? 'film' : 'films' -%></a>
         <a href="/collections" class="btn btn-primary"><%= collectionSize -%> <%= collectionSize == 1 ? 'collection' : 'collections' -%></a>
-        <a href="collection_films" class="btn btn-primary"><%= collectionFilmSize -%> <%= collectionFilmSize != 1 ? 'films' : 'film' -%> in collections</a>
+        <a href="/collection_films" class="btn btn-primary"><%= collectionFilmSize -%> <%= collectionFilmSize != 1 ? 'films' : 'film' -%> in collections</a>
       </div>
     </div>
   </body>

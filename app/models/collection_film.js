@@ -152,6 +152,9 @@ module.exports = function(db) {
     },
     deleteFilm: function(film_id, callback) {
       db.run('delete from collection_films where film_id = ?', [film_id], callback);
+    },
+    deleteCollection: function(collection_id, callback) {
+      db.run('delete from collection_films where collection_id = ?', [collection_id], callback);
     }
   };
 
