@@ -205,6 +205,12 @@ module.exports = function(app, passport, db) {
     }
   });
 
+  app.get('/collection_films/sort/:sort', isLoggedIn, function(req, res) {
+    db.collection_film.fetchData(req.params['sort'], function(collectionFilms) {
+      res.render('pages/collection_films', { collectionFilms: collectionFilms })
+    })
+  });
+
   app.get('/collection_films', isLoggedIn, function(req, res) {
     db.collection_film.fetchData(function(collectionFilms) {
       res.render('pages/collection_films', { collectionFilms: collectionFilms })

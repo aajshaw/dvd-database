@@ -36,16 +36,40 @@ module.exports = function(db) {
         callback(row.count);
       });
     },
-    fetchData: function(callback) {
+    fetchData: function(sort, callback) {
+      if (typeof(sort) == "function") {
+        callback = sort;
+        sort = "collectionAsc";
+      }
+
+      let orderBy;
+      switch (sort) {
+        case "collectionAsc":
+          orderBy = "c.name, f.name";
+          break;
+        case "collectionDesc":
+          orderBy = "c.name desc, f.name";
+          break;
+        case "filmAsc":
+          orderBy = "f.name, c.name";
+          break;
+        case "filmDesc":
+          orderBy = "f.name desc, c.name";
+          break;
+        default:
+          orderBy = "c.name, f.name";
+      }
+
       db.all(`select c.id as collection_id,
                      c.name as collection_name,
-                     f.id as film_id, f.name as film_name
+                     f.id as film_id,
+                     f.name as film_name
                 from collection_films cf,
                      collections c,
                      films f
                where cf.collection_id = c.id
                  and cf.film_id = f.id
-               order by c.name, f.name`,
+               order by ${orderBy}`,
              function(err, rows) {
         if (err) {
           throw err;

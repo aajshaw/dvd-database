@@ -15,15 +15,23 @@
         <% } -%>
       </div>
     </div>
-    <% if (typeof(collectionFilms) != "undefined") { -%>
-      <ul>
-        <% collectionFilms.forEach(function(collectionFilm) { %>
-          <li>
-            <a href="/collection/<%= collectionFilm.collection_id -%>" class="btn btn-primary"><%= collectionFilm.collection_name -%></a>
-            <a href="/film/<%= collectionFilm.film_id -%>" class="btn btn-primary"><%= collectionFilm.film_name -%></a>
-          </li>
-        <% }); %>
-      </ul>
+    <% if (collectionFilms.length > 0) { -%>
+      <div class="container">
+        <div class="col-sm-9 col-sm-offset-3">
+          <table class="table">
+            <tr>
+              <th>Collection <a href="/collection_films/sort/collectionAsc"><span class="fas fa-sort-alpha-up" data-toggle="tooltip" title="Sort by collection name ascending" /></a>&nbsp;<a href="/collection_films/sort/collectionDesc"><span class="fas fa-sort-alpha-down"  data-toggle="tooltip" title="Sort by collection name descending" /></a></th>
+              <th>Film <a href="/collection_films/sort/filmAsc"><span class="fas fa-sort-alpha-up"  data-toggle="tooltip" title="Sort by film name ascending" /></a>&nbsp;<a href="/collection_films/sort/filmDesc"><span class="fas fa-sort-alpha-down"  data-toggle="tooltip" title="Sort by film name descending" /></a></th>
+            </tr>
+            <% collectionFilms.forEach(function(collectionFilm) { -%>
+              <tr>
+                <td><a href="/collection/<%= collectionFilm.collection_id -%>"><%= collectionFilm.collection_name -%></a></td>
+                <td><a href="/film/<%= collectionFilm.film_id -%>"><%= collectionFilm.film_name -%></a></td>
+              </tr>
+            <% }) -%>
+          </table>
+        </div>
+      </div>
     <% } -%>
   </body>
 </html>
