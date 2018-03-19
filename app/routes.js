@@ -3,12 +3,20 @@
 module.exports = function(app, passport, db) {
   // HOME PAGE (with login links)
   app.get('/', function(req, res) {
-    res.render('pages/index.ejs');
+    db.user.count(function(userCount) {
+      if (userCount < 2) {
+        res.render('pages/index.ejs');
+      } else {
+        res.render('pages/login.ejs', { message: req.flash('loginMessage'), showSignup: false });
+      }
+    })
   });
   // LOGIN
   app.get('/login', function(req, res) {
+    db.user.count(function(userCount) {
     // render and pass in flash data if it exists
-    res.render('pages/login.ejs', { message: req.flash('loginMessage') });
+      res.render('pages/login.ejs', { message: req.flash('loginMessage'), showSignup: userCount < 2 });
+    })
   });
   // Process the login form
   app.post('/login', passport.authenticate('local-login', {
@@ -19,7 +27,13 @@ module.exports = function(app, passport, db) {
 
   // SIGNUP
   app.get('/signup', function(req, res) {
-    res.render('pages/signup.ejs', { message: req.flash('signupMessage') });
+    db.user.count(function(userCount) {
+      if (userCount < 2) {
+        res.render('pages/signup.ejs', { message: req.flash('signupMessage') });
+      } else {
+        res.render('pages/login.ejs', { message: req.flash('loginMessage'), showSignup: false });
+      }
+    })
   });
 
   app.post('/signup', passport.authenticate('local-signup', {
@@ -52,6 +66,14 @@ module.exports = function(app, passport, db) {
   app.post('/films/filter', isLoggedIn, function(req, res) {
     db.film.fetchWithNameFilter(req.body['filter'], function(films) {
       res.render('pages/films', { films: films, filter: req.body['filter'] })
+    })
+  });
+
+  app.get('/film/random', isLoggedIn, function(req, res) {
+    db.film.fetchRandom(function(film) {
+      db.collection_film.fetchCollectionsForFilm(film.id, function(collections) {
+        res.render('pages/film_random', { film: film, collections: collections });
+      })
     })
   });
 

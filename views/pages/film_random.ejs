@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Why not try <%= film.name -%></h1>
+        <% if (collections.length > 0) { -%>
+          <h2>This film is in <%= collections.length -%> collection<%= collections.length != 1  ? 's' : '' -%>  </h2>
+        <% } -%>
+      </div>
+    </div>
+    <% if (collections.length > 0) { -%>
+      <h2>Collections</h2>
+      <table class="table">
+        <tr>
+          <th>Collection</th>
+          <th>Actions</th>
+        </tr>
+        <% collections.forEach(function(collection) { -%>
+          <tr>
+            <td><%= collection.name -%></td>
+            <td>
+              <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
+              <a href="/film/<%= film.id -%>/remove_from/<%= collection.id -%>" class="btn btn-default" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
+            </td>
+          </tr>
+        <% }) -%>
+      </table>
+    <% } -%>
+  </body>
+</html>

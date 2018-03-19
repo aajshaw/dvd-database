@@ -41,6 +41,14 @@ module.exports = function(db) {
 
       return user;
     },
+    count: function(callback) {
+      db.get('select count(*) as count from users', function(err, row) {
+        if (err) {
+          throw err;
+        }
+        callback(row.count);
+      });
+    },
     findByUsername: function(username, callback) {
       let me = this;
 

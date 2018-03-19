@@ -45,6 +45,14 @@ module.exports = function(db) {
         callback(row);
       });
     },
+    fetchRandom: function(callback) {
+      db.get('select * from films order by random() limit 1', function(err, row) {
+        if (err) {
+          throw err;
+        }
+        callback(row);
+      });
+    },
     fetchWithNameFilter: function(filter, callback) {
       if (typeof filter == "function") {
         callback = filter;
