@@ -57,6 +57,10 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.get('/backup', isLoggedIn, function(req, res) {
+    res.download(__dirname + '/../db/dvds.sqlite');
+  });
+
   app.get('/films', isLoggedIn, function(req, res) {
     db.film.fetchAll(function(films) {
       res.render('pages/films', { films: films })
