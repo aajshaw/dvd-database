@@ -1,5 +1,7 @@
 'use strict'
 
+const moment = require('moment');
+
 module.exports = function(app, passport, db) {
   // HOME PAGE (with login links)
   app.get('/', function(req, res) {
@@ -58,7 +60,7 @@ module.exports = function(app, passport, db) {
   });
 
   app.get('/backup', isLoggedIn, function(req, res) {
-    res.download(__dirname + '/../db/dvds.sqlite');
+    res.download(__dirname + '/../db/dvds.sqlite', 'dvds_' + moment().format('YYYY-MM-DD_HHmmss') + '.backup');
   });
 
   app.get('/films', isLoggedIn, function(req, res) {
