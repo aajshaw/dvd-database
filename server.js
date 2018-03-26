@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
+const config = require('./config/config');
 const db = require('./db/db')();
 
 require('./config/passport')(passport, db); // pass passport for configuration
@@ -26,7 +27,7 @@ app.set('view engine', 'ejs');
 
 // Set up passport
 app.use(session({
-  secret: 'reallydumbsecret', // I would NEVER do this in production code
+  secret: config.get('session_secret'),
   resave: false,
   saveUninitialized: false
 }));
