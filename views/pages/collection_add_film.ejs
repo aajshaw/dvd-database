@@ -2,6 +2,13 @@
 <html>
   <head>
     <% include ../partials/head %>
+    <script>
+      function addToCollection(filmID) {
+        $.get("/collection/<%= collection.id -%>/add/" + filmID, function(data, status) {
+          $('#film_row_' + filmID).remove();
+        });
+      }
+    </script>
   </head>
   <body>
     <% include ../partials/navigation %>
@@ -17,12 +24,10 @@
           <th>Actions</th>
         </tr>
         <% films.forEach(function(film) { -%>
-          <tr>
+          <tr id="film_row_<%= film.id -%>">
             <td><%= film.name -%></td>
             <td>
-              <a href="/collection/<%= collection.id -%>/add/<%= film.id -%>">
-                <span class="fas fa-link" data-toggle="tooltip" title="Add film to collection" />
-              </a>
+              <span class="fas fa-link" data-toggle="tooltip" title="Add film to collection" onclick="addToCollection('<%= film.id -%>')" />
             </td>
           </tr>
         <% }) -%>

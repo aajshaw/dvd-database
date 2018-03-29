@@ -99,26 +99,9 @@ module.exports = function(app, passport, db) {
     collectionFilm.filmID = req.params['film_id'];
     collectionFilm.save(function(err) {
       if (err) {
-        db.film.fetchById(req.params['film_id'], function(film) {
-          db.collection_film.fetchCollectionsWithoutFilm(req.params['film_id'], function(collections) {
-            res.render('pages/film_add_to_collection',
-                       {
-                         message: `Could not add film to collection ${err}`,
-                         film: film,
-                         collections: collections
-                       })
-          })
-        });
+        res.status(500).send(err);
       } else {
-        db.film.fetchById(req.params['film_id'], function(film) {
-          db.collection_film.fetchCollectionsWithoutFilm(req.params['film_id'], function(collections) {
-            res.render('pages/film_add_to_collection',
-                       {
-                         film: film,
-                         collections: collections
-                       })
-          })
-        });
+        res.status(200).send('OK');
       }
     })
   });
@@ -141,15 +124,7 @@ module.exports = function(app, passport, db) {
 
   app.get('/film/:film_id/remove_from/:collection_id', isLoggedIn, function(req, res) {
     db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
-      db.film.fetchById(req.params['film_id'], function(film) {
-        db.collection_film.fetchCollectionsForFilm(req.params['film_id'], function(collections) {
-          if (collections.length > 0) {
-            res.render('pages/film_remove_from_collection', { film: film, collections: collections });
-          } else {
-            res.render('pages/film', { film: film, collections: collections });
-          }
-        })
-      })
+      res.status(200).send('OK');
     })
   });
 
@@ -261,26 +236,9 @@ module.exports = function(app, passport, db) {
     collectionFilm.filmID = req.params['film_id'];
     collectionFilm.save(function(err) {
       if (err) {
-        db.collection.fetchById(req.params['collection_id'], function(collection) {
-          db.collection_film.fetchFilmsNotInCollection(req.params['collection_id'], function(films) {
-            res.render('pages/collection_add_film',
-                       {
-                         message: `Could not add film to collection ${err}`,
-                         collection: collection,
-                         films: films
-                       })
-          })
-        });
+        res.status(500).send(err);
       } else {
-        db.collection.fetchById(req.params['collection_id'], function(collection) {
-          db.collection_film.fetchFilmsNotInCollection(req.params['collection_id'], function(films) {
-            res.render('pages/collection_add_film',
-                       {
-                         collection: collection,
-                         films: films
-                       })
-          })
-        });
+        res.status(200).send('OK');
       }
     })
   });
@@ -295,15 +253,7 @@ module.exports = function(app, passport, db) {
 
   app.get('/collection/:collection_id/remove/:film_id', isLoggedIn, function(req, res) {
     db.collection_film.delete(req.params['collection_id'], req.params['film_id'], function() {
-      db.collection.fetchById(req.params['collection_id'], function(collection) {
-        db.collection_film.fetchFilmsForCollection(req.params['collection_id'], function(films) {
-          if (films.length > 0) {
-            res.render('pages/collection_remove_films', { collection: collection, films: films });
-          } else {
-            res.render('pages/collection', { collection: collection, films: films });
-          }
-        })
-      })
+      res.status(200).send('OK');
     })
   });
 

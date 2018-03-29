@@ -2,6 +2,15 @@
 <html>
   <head>
     <% include ../partials/head %>
+    <script>
+      function removeFromCollection(filmID, filmName) {
+        if (confirm('Remove ' + filmName + ' from <%= collection.name -%>?')) {
+          $.get("/collection/<%= collection.id -%>/remove/" + filmID, function(data, status) {
+            $("#film_row_" + filmID).remove();
+          });
+        }
+      }
+    </script>
   </head>
   <body>
     <% include ../partials/navigation %>
@@ -21,11 +30,11 @@
             <th>Actions</th>
           </tr>
           <% films.forEach(function(film) { -%>
-            <tr>
+            <tr id="film_row_<%= film.id -%>">
               <td><%= film.name -%></td>
               <td>
                 <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail" /></a>
-                <a href="/collection/<%= collection.id -%>/remove/<%= film.id -%>" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
+                <span class="fas fa-unlink" data-toggle="tooltip" title="Remove film from collection" onclick="removeFromCollection(<%= film.id -%>, '<%= film.name -%>')"/>
               </td>
             </tr>
           <% }); -%>
