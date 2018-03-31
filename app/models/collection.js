@@ -38,12 +38,27 @@ module.exports = function(db) {
       });
     },
     fetchById: function(id, callback) {
+      // Make sure never to select a collection with no films in it
       db.get(`select c.*,
                      (select count(*)
                         from collection_films cf
                        where cf.collection_id = c.id) as film_count
                 from collections c
                where c.id = ?`, [id], function(err, row) {
+        if (err) {
+          throw err;
+        }
+        callback(row);
+      });
+    },
+    fetchRandom: function(callback) {
+      db.get(`select *
+                from collections c
+                where exists(select *
+                               from collection_films cf
+                              where cf.collection_id = c.id)
+               order by random()
+               limit 1`, function(err, row) {
         if (err) {
           throw err;
         }

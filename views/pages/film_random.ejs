@@ -25,7 +25,6 @@
             <td><%= collection.name -%></td>
             <td>
               <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
-              <a href="/film/<%= film.id -%>/remove_from/<%= collection.id -%>" class="btn btn-default" onclick="return confirm('Remove <%= film.name -%> from <%= collection.name -%>?')"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collection"></span></a>
             </td>
           </tr>
         <% }) -%>

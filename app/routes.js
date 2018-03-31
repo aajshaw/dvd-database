@@ -174,12 +174,28 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.get('/collection/random', isLoggedIn, function(req, res) {
+    db.collection.fetchRandom(function(collection) {
+      db.collection_film.fetchFilmsForCollection(collection.id, function(films) {
+        res.render('pages/collection_random', { collection: collection, films: films });
+      })
+    })
+  });
+
   app.get('/collection/delete/:id', isLoggedIn, function(req, res) {
     db.collection_film.deleteCollection(req.params['id'], function() {
       db.collection.delete(req.params['id'], function() {
         db.collection.fetchAll(function(collections) {
           res.render('pages/collections', { collections: collections })
         })
+      })
+    })
+  });
+
+  app.get('/collection/:id/random_film', isLoggedIn, function(req, res) {
+    db.collection_film.fetchRandomFilmFromCollection(req.params['id'], function(film) {
+      db.collection_film.fetchCollectionsForFilm(film.id, function(collections) {
+        res.render('pages/film_random', { film: film, collections: collections });
       })
     })
   });

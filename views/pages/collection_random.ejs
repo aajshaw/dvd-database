@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/navigation %>
+    <div class="container">
+      <div class="jumbotron text-center">
+        <h1>Why not try something from <%= collection.name -%></h1>
+        <% if (films.length > 0) { -%>
+          <h2>This collection has <%= films.length -%> film<%= films.length != 1  ? 's' : '' -%>  </h2>
+        <% } -%>
+      </div>
+    </div>
+    <% if (films.length > 0) { -%>
+      <a href="/collection/<%= collection.id -%>/random_film" class="btn btn-primary">Random film from collection</a>
+      <h2>Films</h2>
+      <table class="table">
+        <tr>
+          <th>Film</th>
+          <th>Actions</th>
+        </tr>
+        <% films.forEach(function(film) { -%>
+          <tr>
+            <td><%= film.name -%></td>
+            <td>
+              <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail"></span></a>
+            </td>
+          </tr>
+        <% }) -%>
+      </table>
+    <% } -%>
+  </body>
+</html>

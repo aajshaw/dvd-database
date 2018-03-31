@@ -143,6 +143,22 @@ module.exports = function(db) {
         callback(rows);
       });
     },
+    fetchRandomFilmFromCollection: function(collection_id, callback) {
+      db.get(`select *
+                from films f
+               where f.id in (select cf.film_id
+                                from collection_films cf
+                               where cf.collection_id = ?)
+               order by random()
+               limit 1`,
+              [collection_id],
+              function(err, row) {
+        if (err) {
+          throw err;
+        }
+        callback(row);
+      });
+    },
     delete: function(collection_id, film_id, callback) {
       db.run(`delete from collection_films
                where collection_id = ?
