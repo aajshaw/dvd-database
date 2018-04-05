@@ -40,6 +40,7 @@
           <td><%= collection.collection_count -%></td>
           <td>
             <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
+            <a href="/collection/<%= collection.id -%>/random_film"><span class="fas fa-random" data-toggle="tooltip" title="Select random film from collection" /></a>
             <a href="/collection/<%= collection.id -%>/add_films"><span class="fas fa-link" data-toggle="tooltip" title="Add films to collection" /></a>
             <% if (collection.collection_count > 0) { -%>
               <a href="/collection/<%= collection.id -%>/remove_films"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove films from collection" /></a>
