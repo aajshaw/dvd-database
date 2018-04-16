@@ -44,6 +44,33 @@ module.exports = function(app, passport, db) {
     failureFlash: true
   }));
 
+  app.get('/random_film/:from', function(req, res) {
+    db.film.fetchRandom(function(film) {
+      switch (req.params['from']) {
+        case 'index':
+          res.render('pages/index.ejs', {randomFilm: film});
+          break;
+        case 'login':
+          db.user.count(function(userCount) {
+          // render and pass in flash data if it exists
+            res.render('pages/login.ejs', { randomFilm: film, message: req.flash('loginMessage'), showSignup: userCount < 2 });
+          });
+          break;
+        case 'signup':
+          db.user.count(function(userCount) {
+            if (userCount < 2) {
+              res.render('pages/signup.ejs', { randomFilm: film, message: req.flash('signupMessage') });
+            } else {
+              res.render('pages/login.ejs', { randomFilm: film, message: req.flash('loginMessage'), showSignup: false });
+            }
+          });
+          break;
+        default:
+          res.render('pages/index.ejs', {randomFilm: film});
+      }
+    });
+  });
+
   app.get('/dashboard', isLoggedIn, function(req, res) {
     db.collection.count(function(collectionSize) {
       db.film.count(function(filmSize) {

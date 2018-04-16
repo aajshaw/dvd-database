@@ -8,6 +8,11 @@
 
       <div class="col-sm-6 col-sm-offset-3">
 
+        <a href="/random_film/login" class="btn btn-default"><span class="fas fa-random" /> Random Film</a>
+        <% if (typeof randomFilm !== 'undefined') { -%>
+          <h1>Why not try <%= randomFilm.name -%></h1>
+        <% } -%>
+
         <h1><span class="fas fa-sign-in-alt"></span> Login</h1>
 
         <!-- show any messages that come back with authentication -->

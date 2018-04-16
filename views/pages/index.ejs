@@ -9,7 +9,11 @@
         <h1><span class="fas fa-lock"></span> DVD List Authentication</h1>
         <a href="/login" class="btn btn-default"><span class="fas fa-sign-in-alt"></span> Login</a>
         <a href="/signup" class="btn btn-default"><span class="fas fa-user-plus"></span> Signup</a>
+        <a href="/random_film/index" class="btn btn-default"><span class="fas fa-random"></span> Random Film</a>
       </div>
     </div>
+    <% if (typeof randomFilm !== 'undefined') { -%>
+      <h1>Why not try <%= randomFilm.name -%></h1>
+    <% } -%>
   </body>
 </html>
