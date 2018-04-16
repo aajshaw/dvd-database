@@ -94,16 +94,13 @@ module.exports = function(app, passport, db) {
   });
 
   app.get('/film/:film_id/add_to/:collection_id', isLoggedIn, function(req, res) {
-    let collectionFilm = db.collection_film.create();
-    collectionFilm.collectionID = req.params['collection_id'];
-    collectionFilm.filmID = req.params['film_id'];
-    collectionFilm.save(function(err) {
+    db.collection_film.create(req.params['collection_id'], req.params['film_id'], function(err) {
       if (err) {
         res.status(500).send(err);
       } else {
         res.status(200).send('OK');
       }
-    })
+    });
   });
 
   app.get('/film/:id/add_to_collections', isLoggedIn, function(req, res) {
@@ -146,9 +143,7 @@ module.exports = function(app, passport, db) {
         if (exists) {
           res.render('pages/create_film', { message: `Film ${req.body.film_name} already exists` });
         } else {
-          let film = db.film.create();
-          film.name = req.body.film_name;
-          film.save(function(err) {
+          db.film.create(req.body.film_name, function(err) {
             if (err) {
               res.render('pages/create_film', { message: `Could not add film ${req.body.film_name}, error ${err}`});
             } else {
@@ -218,9 +213,7 @@ module.exports = function(app, passport, db) {
         if (exists) {
           res.render('pages/create_collection', { message: `Collection ${req.body.collection_name} already exists` });
         } else {
-          let collection = db.collection.create();
-          collection.name = req.body.collection_name;
-          collection.save(function(err) {
+          db.collection.create(req.body.collection_name, function(err) {
             if (err) {
               res.render('pages/create_collection', { message: `Could not add collection ${req.body.collection_name}, error ${err}`});
             } else {
@@ -247,16 +240,13 @@ module.exports = function(app, passport, db) {
   });
 
   app.get('/collection/:collection_id/add/:film_id', isLoggedIn, function(req, res) {
-    let collectionFilm = db.collection_film.create();
-    collectionFilm.collectionID = req.params['collection_id'];
-    collectionFilm.filmID = req.params['film_id'];
-    collectionFilm.save(function(err) {
+    db.collection_film.create(req.params['collection_id'], req.params['film_id'], function(err) {
       if (err) {
         res.status(500).send(err);
       } else {
         res.status(200).send('OK');
       }
-    })
+    });
   });
 
   app.get("/collection/:id/remove_films", isLoggedIn, function(req, res) {

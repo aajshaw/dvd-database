@@ -2,24 +2,10 @@
 
 module.exports = function(db) {
   let film = {
-    create: function() {
-      let film = {
-        id: null,
-        name: null
-      };
-      film.save = function(callback) {
-        let me = this;
-        db.run('insert into films (name) values (?)', [this.name], function(err) {
-          if (err) {
-            callback(err);
-          } else {
-            me.id = this.lastID;
-            callback(null);
-          }
-        });
-      };
-
-      return film;
+    create: function(name, callback) {
+      db.run('insert into films (name) values (?)', [name], function(err) {
+        callback(err ? err : null);
+      });
     },
     exists: function(name, callback) {
       db.get('select count(*) as count from films where name = ?', [name], function(err, row) {

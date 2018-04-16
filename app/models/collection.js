@@ -2,24 +2,10 @@
 
 module.exports = function(db) {
   let collection = {
-    create: function() {
-      let collection = {
-        id: null,
-        name: null
-      };
-      collection.save = function(callback) {
-        let me = this;
-        db.run('insert into collections (name) values (?)', [this.name], function(err) {
-          if (err) {
-            callback(err);
-          } else {
-            me.id = this.lastID;
-            callback(null);
-          }
-        });
-      };
-
-      return collection;
+    create : function(name, callback) {
+      db.run('insert into collections (name) values (?)', [name], function(err) {
+        callback(err ? err : null);
+      });
     },
     exists: function(name, callback) {
       db.get('select count(*) as count from collections where name = ?', [name], function(err, row) {

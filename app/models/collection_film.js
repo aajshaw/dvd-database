@@ -2,23 +2,10 @@
 
 module.exports = function(db) {
   let collectionFilm = {
-    create: function() {
-      let collectionFilm = {
-        collectionID: null,
-        filmID: null
-      };
-      collectionFilm.save = function(callback) {
-        let me = this;
-        db.run('insert into collection_films (collection_id, film_id) values (?, ?)', [this.collectionID, this.filmID], function(err) {
-          if (err) {
-            callback(err);
-          } else {
-            callback(null);
-          }
-        });
-      };
-
-      return collectionFilm;
+    create: function(collectionID, filmID, callback) {
+      db.run('insert into collection_films (collection_id, film_id) values (?, ?)', [collectionID, filmID], function(err) {
+        callback(err ? err : null);
+      });
     },
     count: function(callback) {
       db.get('select count(*) as count from collection_films', function(err, row) {
