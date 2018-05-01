@@ -33,8 +33,9 @@
           <tr id="collection_row_<%= collection.id -%>">
             <td><%= collection.name -%></td>
             <td>
-              <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
-              <span class="fas fa-unlink" data-toggle="tooltip" title="Remove film from collection" onclick="removeFromCollection(<%= collection.id -%>, '<%= collection.name -%>')"/>            </td>
+              <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>&nbsp;
+              <span class="fas fa-unlink" data-toggle="tooltip" title="Remove film from collection" onclick="removeFromCollection(<%= collection.id -%>, '<%= collection.name -%>')"/>
+            </td>
           </tr>
         <% }) -%>
       </table>

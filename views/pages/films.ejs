@@ -39,10 +39,10 @@
           <td><%= film.name -%></td>
           <td><%= film.collection_count -%></td>
           <td>
-            <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail"></span></a>
-            <a href="/film/<%= film.id -%>/add_to_collections"><span class="fas fa-link" data-toggle="tooltip" title="Add to collections"></span></a>
+            <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail"></span></a>&nbsp;
+            <a href="/film/<%= film.id -%>/add_to_collections"><span class="fas fa-link" data-toggle="tooltip" title="Add to collections"></span></a>&nbsp;
             <% if (film.collection_count != 0) { -%>
-              <a href="/film/<%= film.id -%>/remove_from_collections"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collections" /></a>
+              <a href="/film/<%= film.id -%>/remove_from_collections"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove from collections" /></a>&nbsp;
             <% } -%>
             <a href="/film/delete/<%= film.id -%>" onclick="return confirm('Delete <%= film.name -%> permanently?')"><span class="fas fa-trash" data-toggle="tooltip" title="Delete film"></span></a>
           </td>

@@ -39,11 +39,11 @@
           <td><%= collection.name -%></td>
           <td><%= collection.collection_count -%></td>
           <td>
-            <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>
-            <a href="/collection/<%= collection.id -%>/random_film"><span class="fas fa-random" data-toggle="tooltip" title="Select random film from collection" /></a>
-            <a href="/collection/<%= collection.id -%>/add_films"><span class="fas fa-link" data-toggle="tooltip" title="Add films to collection" /></a>
+            <a href="/collection/<%= collection.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Collection detail"></span></a>&nbsp;
+            <a href="/collection/<%= collection.id -%>/random_film"><span class="fas fa-random" data-toggle="tooltip" title="Select random film from collection" /></a>&nbsp;
+            <a href="/collection/<%= collection.id -%>/add_films"><span class="fas fa-link" data-toggle="tooltip" title="Add films to collection" /></a>&nbsp;
             <% if (collection.collection_count > 0) { -%>
-              <a href="/collection/<%= collection.id -%>/remove_films"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove films from collection" /></a>
+              <a href="/collection/<%= collection.id -%>/remove_films"><span class="fas fa-unlink" data-toggle="tooltip" title="Remove films from collection" /></a>&nbsp;
             <% } -%>
             <a href="/collection/delete/<%= collection.id -%>" onclick="return confirm('Delete <%= collection.name -%> permanently?')"><span class="fas fa-trash" data-toggle="tooltip" title="Delete collection" /></a>
           </td>
