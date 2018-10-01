@@ -8,7 +8,7 @@
 
       <div class="col-sm-6 col-sm-offset-3">
 
-        <a href="/random_film/login" class="btn btn-default"><span class="fas fa-random" /> Random Film</a>
+        <a href="/random_film/login" class="btn btn-primary">Suggest Random Film</a>
         <% if (typeof randomFilm !== 'undefined') { -%>
           <h1>Why not try <%= randomFilm.name -%></h1>
         <% } -%>
@@ -31,7 +31,7 @@
             <input type="password" class="form-control" name="password">
           </div>
 
-          <button type="submit" class="btn btn-warning btn-lg">Login</button>
+          <button type="submit" class="btn btn-primary btn-lg">Login</button>
         </form>
 
         <% if (showSignup) { -%>

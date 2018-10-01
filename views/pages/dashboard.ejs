@@ -7,12 +7,11 @@
     <% include ../partials/navigation %>
     <div class="container">
       <div class="jumbotron text-center">
-        <h1><%= user.username %></h1>
+        <h1>Logged in as <%= user.username %></h1>
         <div>
           <a href="/films" class="btn btn-primary"><%= filmSize -%> <%= filmSize == 1 ? 'film' : 'films' -%></a>
           <a href="/collections" class="btn btn-primary"><%= collectionSize -%> <%= collectionSize == 1 ? 'collection' : 'collections' -%></a>
           <a href="/collection_films" class="btn btn-primary"><%= collectionFilmSize -%> <%= collectionFilmSize != 1 ? 'films' : 'film' -%> in collections</a>
-          <a href="/backup" class="btn btn-primary">Backup</a>
         </div>
       </div>
     </div>
