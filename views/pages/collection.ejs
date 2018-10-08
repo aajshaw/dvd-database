@@ -27,11 +27,13 @@
         <table class="table table-striped">
           <tr>
             <th>Film name</th>
+            <th>Watched</th>
             <th>Actions</th>
           </tr>
           <% films.forEach(function(film) { -%>
             <tr id="film_row_<%= film.id -%>">
               <td><%= film.name -%></td>
+              <td><%= film.film_watched_date -%></td>
               <td>
                 <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail" /></a>&nbsp;
                 <span class="fas fa-unlink" data-toggle="tooltip" title="Remove film from collection" onclick="removeFromCollection(<%= film.id -%>, '<%= film.name -%>')"/>

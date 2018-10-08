@@ -50,7 +50,23 @@ module.exports = function(db) {
       db.all(`select c.id as collection_id,
                      c.name as collection_name,
                      f.id as film_id,
-                     f.name as film_name
+                     f.name as film_name,
+                     strftime('%d-', f.watched) ||
+                     case strftime('%m', f.watched)
+                     when '01' then 'Jan'
+                     when '02' then 'Feb'
+                     when '03' then 'Mar'
+                     when '04' then 'Apr'
+                     when '05' then 'May'
+                     when '06' then 'Jun'
+                     when '07' then 'Jul'
+                     when '08' then 'Aug'
+                     when '09' then 'Sep'
+                     when '10' then 'Oct'
+                     when '11' then 'Nov'
+                     when '12' then 'Dec'
+                     end ||
+                     strftime('-%Y') as film_watched_date
                 from collection_films cf,
                      collections c,
                      films f
@@ -66,7 +82,23 @@ module.exports = function(db) {
     },
     fetchFilmsForCollection: function(id, callback) {
       db.all(`select f.id,
-                     f.name
+                     f.name,
+                     strftime('%d-', f.watched) ||
+                     case strftime('%m', f.watched)
+                     when '01' then 'Jan'
+                     when '02' then 'Feb'
+                     when '03' then 'Mar'
+                     when '04' then 'Apr'
+                     when '05' then 'May'
+                     when '06' then 'Jun'
+                     when '07' then 'Jul'
+                     when '08' then 'Aug'
+                     when '09' then 'Sep'
+                     when '10' then 'Oct'
+                     when '11' then 'Nov'
+                     when '12' then 'Dec'
+                     end ||
+                     strftime('-%Y') as film_watched_date
                 from films f,
                      collection_films cf
                where cf.collection_id = ?
@@ -82,7 +114,23 @@ module.exports = function(db) {
     },
     fetchFilmsNotInCollection: function(id, callback) {
       db.all(`select f.id,
-                     f.name
+                     f.name,
+                     strftime('%d-', f.watched) ||
+                     case strftime('%m', f.watched)
+                     when '01' then 'Jan'
+                     when '02' then 'Feb'
+                     when '03' then 'Mar'
+                     when '04' then 'Apr'
+                     when '05' then 'May'
+                     when '06' then 'Jun'
+                     when '07' then 'Jul'
+                     when '08' then 'Aug'
+                     when '09' then 'Sep'
+                     when '10' then 'Oct'
+                     when '11' then 'Nov'
+                     when '12' then 'Dec'
+                     end ||
+                     strftime('-%Y') as film_watched_date
                 from films f
                where not exists (select *
                                    from collection_films cf

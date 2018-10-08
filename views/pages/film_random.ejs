@@ -8,6 +8,9 @@
     <div class="container">
       <div class="jumbotron text-center">
         <h1>Why not try <%= film.name -%></h1>
+        <% if (film.film_watched_date != null) { -%>
+          <h2>Last watched <%= film.film_watched_date -%></h2>
+        <% } -%>
         <% if (collections.length > 0) { -%>
           <h2>This film is in <%= collections.length -%> collection<%= collections.length != 1  ? 's' : '' -%>  </h2>
         <% } -%>

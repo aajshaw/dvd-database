@@ -22,11 +22,13 @@
             <tr>
               <th>Collection <a href="/collection_films/sort/collectionAsc"><span class="fas fa-sort-alpha-up" data-toggle="tooltip" title="Sort by collection name ascending" /></a>&nbsp;<a href="/collection_films/sort/collectionDesc"><span class="fas fa-sort-alpha-down"  data-toggle="tooltip" title="Sort by collection name descending" /></a></th>
               <th>Film <a href="/collection_films/sort/filmAsc"><span class="fas fa-sort-alpha-up"  data-toggle="tooltip" title="Sort by film name ascending" /></a>&nbsp;<a href="/collection_films/sort/filmDesc"><span class="fas fa-sort-alpha-down"  data-toggle="tooltip" title="Sort by film name descending" /></a></th>
+              <th>Watched</th>
             </tr>
             <% collectionFilms.forEach(function(collectionFilm) { -%>
               <tr>
                 <td><a href="/collection/<%= collectionFilm.collection_id -%>"><%= collectionFilm.collection_name -%></a></td>
                 <td><a href="/film/<%= collectionFilm.film_id -%>"><%= collectionFilm.film_name -%></a></td>
+                <td><%= collectionFilm.film_watched_date -%></td>
               </tr>
             <% }) -%>
           </table>

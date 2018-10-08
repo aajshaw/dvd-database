@@ -17,9 +17,13 @@
     <div class="container">
       <div class="jumbotron text-center">
         <h1>Film <%= film.name -%></h1>
+        <% if (film.film_watched_date != null && film.film_watched_date.length > 0) { -%>
+          <h2>Watched on <%= film.film_watched_date -%></h2>
+        <% } -%>
         <% if (collections.length > 0) { -%>
           <h2>This film is in <%= collections.length -%> collection<%= collections.length != 1  ? 's' : '' -%>  </h2>
         <% } -%>
+        <a href="/film/<%= film.id -%>/watched" class="btn btn-primary">Watched today</a>
       </div>
     </div>
     <% if (collections.length > 0) { -%>

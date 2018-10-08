@@ -31,12 +31,14 @@
     <table class="table table-striped">
       <tr>
         <th>Title</th>
+        <th>Watched</th>
         <th>In collections</th>
         <th>Actions</th>
       </tr>
       <% films.forEach(function(film) { -%>
         <tr>
           <td><%= film.name -%></td>
+          <td><%= film.film_watched_date -%></td>
           <td><%= film.collection_count -%></td>
           <td>
             <a href="/film/<%= film.id -%>"><span class="fas fa-eye" data-toggle="tooltip" title="Film detail"></span></a>&nbsp;

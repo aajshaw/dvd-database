@@ -24,7 +24,24 @@ module.exports = function(db) {
       });
     },
     fetchById: function(id, callback) {
-      db.get('select * from films where id = ?', [id], function(err, row) {
+      db.get(`select *,
+                     strftime('%d-', watched) ||
+                     case strftime('%m', watched)
+                     when '01' then 'Jan'
+                     when '02' then 'Feb'
+                     when '03' then 'Mar'
+                     when '04' then 'Apr'
+                     when '05' then 'May'
+                     when '06' then 'Jun'
+                     when '07' then 'Jul'
+                     when '08' then 'Aug'
+                     when '09' then 'Sep'
+                     when '10' then 'Oct'
+                     when '11' then 'Nov'
+                     when '12' then 'Dec'
+                     end ||
+                     strftime('-%Y', watched) as film_watched_date
+               from films where id = ?`, [id], function(err, row) {
         if (err) {
           throw err;
         }
@@ -32,7 +49,24 @@ module.exports = function(db) {
       });
     },
     fetchRandom: function(callback) {
-      db.get('select * from films order by random() limit 1', function(err, row) {
+      db.get(`select *,
+                     strftime('%d-', watched) ||
+                     case strftime('%m', watched)
+                     when '01' then 'Jan'
+                     when '02' then 'Feb'
+                     when '03' then 'Mar'
+                     when '04' then 'Apr'
+                     when '05' then 'May'
+                     when '06' then 'Jun'
+                     when '07' then 'Jul'
+                     when '08' then 'Aug'
+                     when '09' then 'Sep'
+                     when '10' then 'Oct'
+                     when '11' then 'Nov'
+                     when '12' then 'Dec'
+                     end ||
+                     strftime('-%Y', watched) as film_watched_date
+                from films order by random() limit 1`, function(err, row) {
         if (err) {
           throw err;
         }
@@ -47,6 +81,23 @@ module.exports = function(db) {
       if (filter) {
         db.all(`select f.id,
                        f.name,
+                       f.watched,
+                       strftime('%d-', f.watched) ||
+                       case strftime('%m', f.watched)
+                       when '01' then 'Jan'
+                       when '02' then 'Feb'
+                       when '03' then 'Mar'
+                       when '04' then 'Apr'
+                       when '05' then 'May'
+                       when '06' then 'Jun'
+                       when '07' then 'Jul'
+                       when '08' then 'Aug'
+                       when '09' then 'Sep'
+                       when '10' then 'Oct'
+                       when '11' then 'Nov'
+                       when '12' then 'Dec'
+                       end ||
+                       strftime('-%Y', f.watched) as film_watched_date,
                        (select count(*)
                           from collection_films cf
                          where cf.film_id = f.id) as collection_count
@@ -62,6 +113,23 @@ module.exports = function(db) {
       } else {
         db.all(`select f.id,
                        f.name,
+                       f.watched,
+                       strftime('%d-', f.watched) ||
+                       case strftime('%m', f.watched)
+                       when '01' then 'Jan'
+                       when '02' then 'Feb'
+                       when '03' then 'Mar'
+                       when '04' then 'Apr'
+                       when '05' then 'May'
+                       when '06' then 'Jun'
+                       when '07' then 'Jul'
+                       when '08' then 'Aug'
+                       when '09' then 'Sep'
+                       when '10' then 'Oct'
+                       when '11' then 'Nov'
+                       when '12' then 'Dec'
+                       end ||
+                       strftime('-%Y', f.watched) as film_watched_date,
                        (select count(*)
                           from collection_films cf
                          where cf.film_id = f.id) as collection_count
@@ -77,6 +145,9 @@ module.exports = function(db) {
     },
     fetchAll: function(callback) {
       this.fetchWithNameFilter(callback);
+    },
+    setWatched: function(id, callback) {
+      db.run("update films set watched = date('now') where id = ?", [id], callback);
     },
     delete: function(id, callback) {
       db.run('delete from films where id = ?', [id], callback);

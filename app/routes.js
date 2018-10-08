@@ -152,6 +152,16 @@ module.exports = function(app, passport, db) {
     })
   });
 
+  app.get('/film/:id/watched', isLoggedIn, function(req, res) {
+    db.film.setWatched(req.params['id'], function() {
+      db.film.fetchById(req.params['id'], function(film) {
+        db.collection_film.fetchCollectionsForFilm(req.params['id'], function(collections) {
+          res.render('pages/film', { film: film, collections: collections })
+        })
+      })
+    })
+  });
+
   app.get('/film/:id', isLoggedIn, function(req, res) {
     db.film.fetchById(req.params['id'], function(film) {
       db.collection_film.fetchCollectionsForFilm(req.params['id'], function(collections) {
