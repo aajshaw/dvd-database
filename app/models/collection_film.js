@@ -66,7 +66,7 @@ module.exports = function(db) {
                      when '11' then 'Nov'
                      when '12' then 'Dec'
                      end ||
-                     strftime('-%Y') as film_watched_date
+                     strftime('-%Y', f.watched) as film_watched_date
                 from collection_films cf,
                      collections c,
                      films f
@@ -130,7 +130,7 @@ module.exports = function(db) {
                      when '11' then 'Nov'
                      when '12' then 'Dec'
                      end ||
-                     strftime('-%Y') as film_watched_date
+                     strftime('-%Y', f.watched) as film_watched_date
                 from films f
                where not exists (select *
                                    from collection_films cf
